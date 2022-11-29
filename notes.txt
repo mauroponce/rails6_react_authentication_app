@@ -1,8 +1,13 @@
+https://www.crondose.com/2019/04/ruby-on-rails-app-creation-and-initial-configuration/
 I want to use sessions, so no --api option
 rails new authentication_app --database=postgresql -T
 
 Create user in postgresql
 sudo su - postgres
 createuser --interactive --pwprompt
-
+Add user and password to database.yml, and also host if missing
 rails db:create
+
+We’re adding the credentials: true flag at the end of the line. This is what is going to allow you to pass the HTTP only cookies back and forth between the front end and backend applications
+
+https://www.crondose.com/2019/04/building-the-user-model-and-session-controller-for-the-rails-api-authentication-app/
