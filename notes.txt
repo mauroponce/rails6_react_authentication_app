@@ -1,0 +1,8 @@
+I want to use sessions, so no --api option
+rails new authentication_app --database=postgresql -T
+
+Create user in postgresql
+sudo su - postgres
+createuser --interactive --pwprompt
+
+rails db:create
