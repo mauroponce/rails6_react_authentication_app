@@ -1,6 +1,14 @@
 import logo from './logo.svg';
 import './App.css';
 
+async function checkLoggedIn(event) {
+  event.preventDefault();
+  const response = await fetch('http://localhost:4000/sessions/logged_in')
+  response.json().then((data) => {
+    alert('Logged in: ' + data.logged_in)
+  })  
+}
+
 function App() {
   return (
     <div className="App">
@@ -15,7 +23,9 @@ function App() {
           target="_blank"
           rel="noopener noreferrer"
         >
-          Learn React
+          <button onClick={checkLoggedIn}>
+            Is Logged in?
+          </button>
         </a>
       </header>
     </div>
