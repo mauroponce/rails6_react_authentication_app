@@ -1,10 +1,6 @@
 class RegistrationsController < ApplicationController
   def create
-    user = User.create!(
-      email: params['user']['email'],
-      password: params['user']['password'],
-      password_confirmation: params['user']['password_confirmation']
-    )
+    user = User.create!(registration_params)
 
     if user
       session[:user_id] = user.id
@@ -17,5 +13,10 @@ class RegistrationsController < ApplicationController
         status: :internal_server_error
       }
     end
+  end
+
+  private
+  def registration_params
+    params.require(:user).permit(:email, :password, :password_confirmation)
   end
 end
