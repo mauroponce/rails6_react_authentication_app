@@ -1,4 +1,5 @@
 import './App.css';
+import axios from 'axios';
 import {BrowserRouter, Switch, Route} from 'react-router-dom';
 import Home from './components/Home';
 import Dashboard from './components/Dashboard';
@@ -9,20 +10,35 @@ export default class App extends Component {
    super(props);
    
     this.state = {
-      loggedInStatus: 'NOT_LOGGED_IN',
-      user: {}
+      currentUser: {}
     };
+  }
+
+  componentDidMount() {
+    this.checkLoginStatus();
   }
 
   handleLogin = (data) => {
     this.setState({
-      loggedInStatus: 'LOGGED_IN',
-      user: data.user
+      currentUser: data.user
     });
-  } 
+  }
+
+  checkLoginStatus = () => {
+    axios.get(
+      'http://localhost:4000/sessions/logged_in',
+      { withCredentials: true } // work with cookies (Rails session)
+    ).then((response) => {
+      this.setState({
+        currentUser: response.data.logged_in ? response.data.user : {}
+      })
+    }).catch(error => {
+      console.log('Login error', error);
+    });
+  }
 
   render() {
-    const {loggedInStatus} = this.state;
+    const {currentUser, isUserLoggedIn} = this.state;
     return (
       <div className="App">
         <BrowserRouter>
@@ -31,8 +47,9 @@ export default class App extends Component {
               exact
               path='/'
               render={props => (
-                <Home {...props}
-                  loggedInStatus={loggedInStatus}
+                <Home
+                  {...props}
+                  currentUser={currentUser}
                   handleLogin={(data) => this.handleLogin(data)}
                 />
               )}
@@ -41,7 +58,10 @@ export default class App extends Component {
               exact
               path='/dashboard'
               render={props => (
-                <Dashboard {...props} loggedInStatus={loggedInStatus} />
+                <Dashboard
+                  {...props}
+                  currentUser={currentUser}
+                />
               )}
             />
           </Switch>

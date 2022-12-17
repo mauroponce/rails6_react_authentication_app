@@ -1,5 +1,7 @@
 class SessionsController < ApplicationController
   include CurrentUser
+
+  before_action :set_current_user, only: [:logged_in, :logout]
  
   def create
     user = User.find_by(email: params['user']['email'])
@@ -10,7 +12,6 @@ class SessionsController < ApplicationController
       session[:user_id] = user.id
       render json: {
         status: :created,
-        logged_in: true,
         user: user
       }
     else
