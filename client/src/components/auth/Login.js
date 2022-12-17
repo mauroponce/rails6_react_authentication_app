@@ -1,35 +1,35 @@
 import React, { Component } from 'react'
 import axios from 'axios';
 
-export default class Registration extends Component {
+export default class Login extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
       email: '',
       password: '',
-      password_confirmation: '',
-      registrationErrors: '' // TODO: show errors
+      loginErrors: '' // TODO: show errors
     };
   }
 
   handleSubmit = (event) => {
     event.preventDefault();
   
-    const {email, password, password_confirmation} = this.state;
+    const {email, password} = this.state;
     axios.post(
-      'http://localhost:4000/registrations',
+      'http://localhost:4000/sessions',
       {
         user: {
           email,
-          password,
-          password_confirmation
+          password
         }
       },
       { withCredentials: true } // allow server to set cookie in the browser
     ).then(response => {
-      if(response.data.status === 'created') {
+      if(response.data.logged_in) {
         this.props.handleSuccessfulAuth(response.data);
+      } else if(response.data.status === 'unauthorized'){
+        alert('Invalid credentials');
       }
     }).catch( error => {
       console.log(error);
@@ -43,7 +43,7 @@ export default class Registration extends Component {
   }
 
   render() {
-    const {email, password, password_confirmation} = this.state;
+    const {email, password} = this.state;
     return (
       <div>
         <form onSubmit={this.handleSubmit}>
@@ -64,16 +64,7 @@ export default class Registration extends Component {
             onChange={this.handleChange}
             required
           />
-
-          <input
-            type='password'
-            name='password_confirmation'
-            placeholder='Password Confirmation'
-            value={password_confirmation}
-            onChange={this.handleChange}
-            required
-          />
-          <button type='submit'>Register</button>
+          <button type='submit'>Log in</button>
         </form>
       </div>
     )

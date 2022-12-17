@@ -14,7 +14,7 @@ class SessionsController < ApplicationController
         user: user
       }
     else
-      render json: { status: :unauthorized}
+      render json: { status: :unauthorized }
     end
   end
 
