@@ -14,6 +14,13 @@ export default class App extends Component {
     };
   }
 
+  handleLogin = (data) => {
+    this.setState({
+      loggedInStatus: 'LOGGED_IN',
+      user: data.user
+    });
+  } 
+
   render() {
     const {loggedInStatus} = this.state;
     return (
@@ -24,7 +31,10 @@ export default class App extends Component {
               exact
               path='/'
               render={props => (
-                <Home {...props} loggedInStatus={loggedInStatus} />
+                <Home {...props}
+                  loggedInStatus={loggedInStatus}
+                  handleLogin={(data) => this.handleLogin(data)}
+                />
               )}
             />
             <Route

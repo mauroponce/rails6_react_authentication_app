@@ -6,12 +6,17 @@ export default class Home extends Component {
     super(props);
   }
 
+  handleSuccessfulAuth = (data) => {
+    this.props.handleLogin(data);
+    this.props.history.push('/dashboard');
+  }
+
   render() {
     return (
       <div>
         <h1>Home</h1>
         <h2>status: {this.props.loggedInStatus}</h2>
-        <Registration />
+        <Registration handleSuccessfulAuth={this.handleSuccessfulAuth} />
       </div>
     )
   }
