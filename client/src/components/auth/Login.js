@@ -26,7 +26,7 @@ export default class Login extends Component {
       },
       { withCredentials: true } // allow server to set cookie in the browser
     ).then(response => {
-      if(response.data.logged_in) {
+      if(response.data.user) {
         this.props.handleSuccessfulAuth(response.data);
       } else if(response.data.status === 'unauthorized'){
         alert('Invalid credentials');
